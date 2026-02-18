@@ -101,7 +101,8 @@ how_many
 - How much was awarded in 2010? 
 
 ```{r}
-how_much <- sum
+how_much <- sum(grants$total_amount[how_many])
+how_much
 ```
 
 
@@ -127,13 +128,13 @@ Luckily, you can pass the USPersonalExpenditure variable as an argument to the `
 Do this, storing the result in a new variable
 
 ```{r}
-
+USPE <- data.frame(USPersonalExpenditure)
 ```
 
 
 What are the current column names of your dataframe?
 ```{r}
-
+colnames(USPE)
 ```
 
 
@@ -141,7 +142,7 @@ Consider: why are they so strange? (Think about whether you could use a number l
 
 What are the current row names of your dataframe?
 ```{r}
-
+rownames(USPE)
 ```
 
 
@@ -154,7 +155,10 @@ Add a column "Category" to your data frame that contains the rownames
 Consider how this data isn't tidy. Use the `pivot_longer()` function from last class to make the data tidy. 
 
 ```{r}
-
+USPE <- pivot_longer(USPE,
+                     cols = c("X1940", "X1945", "X1950", "X1955", "X1960")
+                     names_to = "Year"
+                     values_to = "Amount_$")
 ```
 
 
