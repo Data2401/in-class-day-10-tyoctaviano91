@@ -1,0 +1,194 @@
+---
+title: "Dataframes - In Class lab"
+author: "Dr. Shoemaker"
+date: "DATA 2401"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+# Working with loaded in csv files
+
+
+Use the `read.csv()` function to read the data from the `gates_donations.csv` file (available on Canvas, make sure you save it in the project repository folder) into a variable called `grants` 
+
+```{r}
+## if you save it in the same folder as this file this should work. 
+## But you may need edit the string to reflect the actual file name: 
+
+grants <- read_csv("gates_donations.csv")
+
+
+head(grants)
+```
+
+Because you're in an RProject, you don't need to set your working directory in RStudio! The working directory is automatically set to the repository location. (You can use `getwd()` to confirm this)
+
+- Use the glimpse function to look at the loaded data
+
+```{r}
+
+
+```
+
+
+- Create a variable `org` that contains the `organization` column of the dataset
+
+```{r}
+
+
+```
+
+
+- Confirm that the "organization" column is a vector using the `is.vector()` function. (This is a useful debugging tip if you hit errors later!)
+
+```{r}
+
+
+```
+
+
+Now you can ask some interesting questions about the dataset:
+
+- What was the mean grant value?
+
+```{r}
+
+```
+
+
+- What was the dollar amount of the largest grant?
+
+```{r}
+
+```
+
+
+- What was the dollar amount of the smallest grant?
+
+```{r}
+
+```
+
+
+- Which organization received the largest grant?
+
+```{r}
+
+
+```
+
+
+- Which organization received the smallest grant?
+
+```{r}
+
+```
+
+- How many grants were awarded in 2010?
+
+```{r}
+
+```
+
+- How much was awarded in 2010? 
+
+```{r}
+
+```
+
+
+# Working with built-in data sets
+
+Load R's "USPersonalExpenditure" dataset using the `data()` function
+
+This will produce a data frame called `USPersonalExpenditure`
+```{r}
+data("USPersonalExpenditure")
+```
+
+The variable `USPersonalExpenditure` is now accessible to you. Unfortunately, it's not a data frame (it's actually a matrix, you can find that out using) 
+
+Test this using the `is.data.frame()` function:
+
+```{r}
+is.data.frame(USPersonalExpenditure)
+```
+
+Luckily, you can pass the USPersonalExpenditure variable as an argument to the `data.frame()` function to convert it a data frame.
+
+Do this, storing the result in a new variable
+
+```{r}
+
+```
+
+
+What are the current column names of your dataframe?
+```{r}
+
+```
+
+
+Consider: why are they so strange? (Think about whether you could use a number like 1940 with dollar notation!)
+
+What are the current row names of your dataframe?
+```{r}
+
+```
+
+
+Add a column "Category" to your data frame that contains the rownames
+
+```{r}
+
+```
+
+Consider how this data isn't tidy. Use the `pivot_longer()` function from last class to make the data tidy. 
+
+```{r}
+
+```
+
+
+How much money was spent on personal care in 1940?
+```{r}
+
+```
+
+
+How much money was spent on Food and Tobacco in 1960?
+```{r}
+
+
+```
+
+
+What was the highest expenditure category in 1960?
+```{r}
+
+
+```
+
+
+Define a function `lowest_category` that takes in a year as a parameter, and returns the lowest spending category of that year
+```{r}
+
+
+
+```
+
+```{r}
+
+```
+
+
+Using your function, determine the lowest spending category of each year
+Hint: use the `sapply()` function to apply your function to a vector of years
+
+```{r}
+
+```
