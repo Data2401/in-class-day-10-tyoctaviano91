@@ -94,15 +94,14 @@ org[smallest_grant]
 - How many grants were awarded in 2010?
 
 ```{r}
-how_many <- sum(grants$start_year == 2010)
-how_many
+nrow(grants[grants$start_year == 2010, ])
 ```
 
 - How much was awarded in 2010? 
 
 ```{r}
-how_much <- sum(grants$total_amount[how_many])
-how_much
+sum(grants[grants$start_year == 2010, "total_amount"])
+
 ```
 
 
@@ -129,6 +128,7 @@ Do this, storing the result in a new variable
 
 ```{r}
 USPE <- data.frame(USPersonalExpenditure)
+USPE
 ```
 
 
@@ -149,48 +149,56 @@ rownames(USPE)
 Add a column "Category" to your data frame that contains the rownames
 
 ```{r}
-
+USPE <- rownames_to_column(USPE, var = "Category")
 ```
 
 Consider how this data isn't tidy. Use the `pivot_longer()` function from last class to make the data tidy. 
 
 ```{r}
 USPE <- pivot_longer(USPE,
-                     cols = c("X1940", "X1945", "X1950", "X1955", "X1960")
-                     names_to = "Year"
+                     cols = c("X1940", "X1945", "X1950", "X1955", "X1960"),
+                     names_to = "Year",
                      values_to = "Amount_$")
+USPE
 ```
 
 
 How much money was spent on personal care in 1940?
 ```{r}
-
+sum(USPE$'Amount_$'[USPE$Category == "Personal Care" & USPE$Year == "X1940"])
 ```
 
 
 How much money was spent on Food and Tobacco in 1960?
 ```{r}
-
+sum(USPE$'Amount_$'[USPE$Category == "Food and Tobacco" & USPE$Year == "X1960"])
 
 ```
 
 
 What was the highest expenditure category in 1960?
 ```{r}
-
+subset_1960 <- USPE[USPE$Year == "X1960", ]
+subset_1960$Category[which.max(subset_1960$`Amount_$`)]
 
 ```
 
 
 Define a function `lowest_category` that takes in a year as a parameter, and returns the lowest spending category of that year
 ```{r}
+lowest_category <- function(year){
+  year_value <- paste0("X",year)
+  
+  that_year_data <- USPE[USPE$Year == year_value, ]
+  that_year_data$Category[which.max(that_year_data$'Amount_$')]
+}
 
-
-
+lowest_category(1950)
 ```
 
 ```{r}
-
+year_vec <- seq(1940, 1960, by = 5)
+sapply(year_vec, lowest_category)
 ```
 
 
@@ -198,5 +206,7 @@ Using your function, determine the lowest spending category of each year
 Hint: use the `sapply()` function to apply your function to a vector of years
 
 ```{r}
+USPE$Year_num <- as.numeric(str_sub(USPE$Year, start = 2, end = 5))
 
+sapply(USPE$Year_num, lowest_category)
 ```
